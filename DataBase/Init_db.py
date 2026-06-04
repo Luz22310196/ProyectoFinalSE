@@ -26,12 +26,11 @@ CREATE TABLE IF NOT EXISTS clientes (
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cliente_id INTEGER,
-    total REAL,
-    fecha TEXT,
-    FOREIGN KEY(cliente_id) REFERENCES clientes(id)
+    producto TEXT,
+    cantidad INTEGER
 )
 """)
+
 
 conexion.commit()
 conexion.close()

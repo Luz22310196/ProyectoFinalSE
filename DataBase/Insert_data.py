@@ -3,27 +3,33 @@ import sqlite3
 conexion = sqlite3.connect("Sistema.db")
 cursor = conexion.cursor()
 
-productos = [
-    ("Motor NEMA17", 20, 250),
-    ("Driver A4988", 50, 80),
-    ("ESP32", 30, 180),
-    ("Sensor Ultrasonico", 40, 70)
-]
+cursor.execute("SELECT COUNT(*) FROM productos")
+if cursor.fetchone()[0] == 0:
 
-cursor.executemany(
-    "INSERT INTO productos(nombre, stock, precio) VALUES(?,?,?)",
-    productos
-)
+    productos = [
+        ("Motor NEMA17", 20, 250),
+        ("Driver A4988", 50, 80),
+        ("ESP32", 30, 180),
+        ("Sensor Ultrasonico", 40, 70)
+    ]
 
-clientes = [
-    ("Juan Perez", 1),
-    ("Maria Lopez", 0)
-]
+    cursor.executemany(
+        "INSERT INTO productos(nombre, stock, precio) VALUES(?,?,?)",
+        productos
+    )
 
-cursor.executemany(
-    "INSERT INTO clientes(nombre, frecuente) VALUES(?,?)",
-    clientes
-)
+cursor.execute("SELECT COUNT(*) FROM clientes")
+if cursor.fetchone()[0] == 0:
+
+    clientes = [
+        ("Juan Perez", 1),
+        ("Maria Lopez", 0)
+    ]
+
+    cursor.executemany(
+        "INSERT INTO clientes(nombre, frecuente) VALUES(?,?)",
+        clientes
+    )
 
 conexion.commit()
 conexion.close()

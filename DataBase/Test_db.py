@@ -3,12 +3,14 @@ import sqlite3
 conexion = sqlite3.connect("Sistema.db")
 cursor = conexion.cursor()
 
-cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+print("PRODUCTOS:")
+cursor.execute("SELECT * FROM productos")
+for row in cursor.fetchall():
+    print(row)
 
-tablas = cursor.fetchall()
-
-print("Tablas encontradas:")
-for tabla in tablas:
-    print(tabla[0])
+print("\nCLIENTES:")
+cursor.execute("SELECT * FROM clientes")
+for row in cursor.fetchall():
+    print(row)
 
 conexion.close()
