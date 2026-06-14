@@ -1,38 +1,18 @@
 import sqlite3
 
-conexion = sqlite3.connect("Sistema.db")
-cursor = conexion.cursor()
+conn = sqlite3.connect("DataBase/Sistema.db")
+cursor = conn.cursor()
 
-# Tabla productos
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS productos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre TEXT NOT NULL,
-    stock INTEGER NOT NULL,
-    precio REAL NOT NULL
+    nombre TEXT,
+    precio REAL,
+    stock INTEGER
 )
 """)
 
-# Tabla clientes
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS clientes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre TEXT NOT NULL,
-    frecuente INTEGER DEFAULT 0
-)
-""")
+conn.commit()
+conn.close()
 
-# Tabla pedidos
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS pedidos (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    producto TEXT,
-    cantidad INTEGER
-)
-""")
-
-
-conexion.commit()
-conexion.close()
-
-print("Base de datos creada correctamente")
+print("DB creada")

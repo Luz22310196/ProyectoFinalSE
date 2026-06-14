@@ -1,45 +1,32 @@
-from DataBase.db import obtener_stock, insertar_pedido
+from DataBase.db import obtener_producto
 
 def generar_pedido(productos):
-    resultado = []
-    explicacion = []
+    total = 0
+    alertas = []
+    detalle = []
 
-    if not productos:
-        explicacion.append("No se detectó ningún producto válido en el mensaje.")
-        return resultado, explicacion
+    for p in productos:
+        data = obtener_producto(p["nombre"])
 
-    for item in productos:
-        producto = item["producto"]
-        cantidad = item["cantidad"]
+        if not data:
+            alertas.append(f"{p['nombre']} no existe")
+            continue
 
-        stock = obtener_stock(producto)
+        if data["stock"] < p["cantidad"]:
+            alertas.append(f"Stock insuficiente de {p['nombre']}")
 
-        # Regla 1: stock suficiente
-        if stock >= cantidad:
-            estado = "APROBADO"
-            insertar_pedido(producto, cantidad)
+        subtotal = data["precio"] * p["cantidad"]
+        total += subtotal
 
-            explicacion.append(
-                f"Se detectó el producto '{producto}' con cantidad {cantidad}. "
-                f"Hay stock suficiente ({stock} disponibles), por lo tanto el pedido fue aprobado."
-            )
-
-        # Regla 2: stock insuficiente
-        else:
-            estado = "RECHAZADO"
-
-            explicacion.append(
-                f"Se detectó el producto '{producto}' con cantidad {cantidad}. "
-                f"El stock disponible es {stock}, por lo tanto el pedido fue rechazado por stock insuficiente."
-            )
-
-        resultado.append({
-            "producto": producto,
-            "cantidad": cantidad,
-            "stock": stock,
-            "estado": estado
+        detalle.append({
+            "nombre": p["nombre"],
+            "cantidad": p["cantidad"],
+            "subtotal": subtotal
         })
 
-    return resultado, explicacion
+    # REGLA DE INFERENCIA
+    if total > 500:
+        total *= 0.9
+        alertas.append("Se aplicó descuento del 10%")
 
-``
+    return detalle, total, alertas

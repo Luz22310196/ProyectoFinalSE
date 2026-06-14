@@ -1,17 +1,14 @@
-def explicar(pedidos, explicaciones):
-    if not pedidos:
-        return "No fue posible generar un pedido.\n\nMotivo:\n- " + "\n- ".join(explicaciones)
+def explicar(detalle, total, alertas):
+    texto = "\n🧾 RESUMEN DEL PEDIDO:\n"
 
-    respuesta = "RESULTADO DEL SISTEMA EXPERTO\n\n"
+    for item in detalle:
+        texto += f"- {item['cantidad']} x {item['nombre']} = ${item['subtotal']}\n"
 
-    for p in pedidos:
-        respuesta += f"Producto: {p['producto']}\n"
-        respuesta += f"Cantidad solicitada: {p['cantidad']}\n"
-        respuesta += f"Stock disponible: {p['stock']}\n"
-        respuesta += f"Estado: {p['estado']}\n\n"
+    texto += f"\n Total final: ${total}\n"
 
-    respuesta += "EXPLICACIÓN DEL RAZONAMIENTO\n"
-    for e in explicaciones:
-        respuesta += f"- {e}\n"
+    if alertas:
+        texto += "\n Inferencias realizadas:\n"
+        for a in alertas:
+            texto += f"- {a}\n"
 
-    return respuesta
+    return texto

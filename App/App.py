@@ -1,38 +1,23 @@
-import streamlit as st
+from Agents.Cliente import interpretar_mensaje
+from Agents.Pedido import generar_pedido
+from Agents.Supervisor import explicar
 
-st.set_page_config(
-    page_title="Sistema Experto de Ventas",
-    layout="centered"
-)
+def main():
+    print("Sistema Experto de Ventas")
 
-st.title("Sistema Experto de Ventas")
-st.write("Ingrese su solicitud para analizarla y generar una respuesta estructurada.")
+    texto = input("Cliente: ")
 
-# Entrada
-mensaje = st.text_area(
-    "Solicitud del usuario:",
-    placeholder="Ejemplo: Necesito 3 motores NEMA17 y 2 drivers",
-    height=120
-)
+    productos = interpretar_mensaje(texto)
 
-# Botón
-if st.button("Procesar solicitud"):
+    if not productos:
+        print("No se entendió el pedido")
+        return
 
-    if mensaje.strip() == "":
-        st.warning("Debe ingresar una solicitud antes de procesar.")
-    else:
-        st.success("Solicitud recibida correctamente")
+    detalle, total, alertas = generar_pedido(productos)
 
-        st.subheader("Entrada procesada")
-        st.write(mensaje)
+    respuesta = explicar(detalle, total, alertas)
 
-        # Simulación de sistema experto (puedes reemplazar esto luego)
-        st.subheader("Resultado del sistema experto")
+    print(respuesta)
 
-        # Ejemplo simple de reglas simuladas
-        if "motor" in mensaje.lower():
-            st.write("Se detectaron componentes de tipo motor.")
-        if "driver" in mensaje.lower():
-            st.write("Se detectaron drivers en la solicitud.")
-
-        st.info("El sistema aún se encuentra en fase de reglas básicas.")
+if __name__ == "__main__":
+    main()

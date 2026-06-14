@@ -1,43 +1,22 @@
 import sqlite3
 
-def get_connection():
+def conectar():
     return sqlite3.connect("DataBase/Sistema.db")
 
-def obtener_productos():
-    conn = get_connection()
+def obtener_producto(nombre):
+    conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT nombre, stock, precio FROM productos")
-    datos = cursor.fetchall()
-
-    conn.close()
-    return datos
-
-def obtener_stock(nombre_producto):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "SELECT stock FROM productos WHERE nombre LIKE ?",
-        ('%' + nombre_producto + '%',)
-    )
-
+    cursor.execute("SELECT nombre, precio, stock FROM productos WHERE nombre=?", (nombre,))
     result = cursor.fetchone()
+
     conn.close()
 
     if result:
-        return result[0]
-    else:
-        return 0
-
-def insertar_pedido(producto, cantidad):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "INSERT INTO pedidos (producto, cantidad) VALUES (?, ?)",
-        (producto, cantidad)
-    )
-
-    conn.commit()
-    conn.close()
+        return {
+            "nombre": result[0],
+            "precio": result[1],
+            "stock": result[2]
+        }
+    return None
+``
