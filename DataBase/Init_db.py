@@ -15,4 +15,4 @@ CREATE TABLE IF NOT EXISTS productos (
 conn.commit()
 conn.close()
 
-print("DB creada")
+print("Base creada")

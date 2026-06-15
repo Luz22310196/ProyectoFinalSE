@@ -1,0 +1,7 @@
+SISTEMA EXPERTO - REGLAS
+1. IF cliente escribe productos THEN interpretar texto
+2. IF stock < cantidad THEN rechazar venta
+3. IF total > 200 THEN aplicar descuento
+4. IF producto perecedero THEN generar alerta
+5. IF cantidad >= 5 THEN mayoreo
+6. IF pedido válido THEN generar explicación

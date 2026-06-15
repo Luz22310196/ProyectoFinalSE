@@ -1,19 +1,19 @@
-from DataBase.db import obtener_producto
+from DataBase.db import obtener_producto, actualizar_stock
 
 def generar_pedido(productos):
     total = 0
-    alertas = []
     detalle = []
+    alertas = []
 
     for p in productos:
         data = obtener_producto(p["nombre"])
 
         if not data:
-            alertas.append(f"{p['nombre']} no existe")
             continue
 
         if data["stock"] < p["cantidad"]:
             alertas.append(f"Stock insuficiente de {p['nombre']}")
+            continue
 
         subtotal = data["precio"] * p["cantidad"]
         total += subtotal
@@ -24,9 +24,9 @@ def generar_pedido(productos):
             "subtotal": subtotal
         })
 
-    # REGLA DE INFERENCIA
-    if total > 500:
+        actualizar_stock(p["nombre"], p["cantidad"])
+
+    if total > 200:
         total *= 0.9
-        alertas.append("Se aplicó descuento del 10%")
 
     return detalle, total, alertas

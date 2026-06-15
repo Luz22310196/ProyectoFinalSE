@@ -1,9 +1,14 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from Agents.Cliente import interpretar_mensaje
 from Agents.Pedido import generar_pedido
 from Agents.Supervisor import explicar
 
 def main():
-    print("Sistema Experto de Ventas")
+    print("Sistema Experto")
 
     texto = input("Cliente: ")
 

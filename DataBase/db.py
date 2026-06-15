@@ -18,5 +18,17 @@ def obtener_producto(nombre):
             "precio": result[1],
             "stock": result[2]
         }
+
     return None
-``
+
+def actualizar_stock(nombre, cantidad):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE productos SET stock = stock - ? WHERE nombre=?",
+        (cantidad, nombre)
+    )
+
+    conn.commit()
+    conn.close()
